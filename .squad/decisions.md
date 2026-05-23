@@ -34,6 +34,20 @@ The chained credential login mode implementation is a straightforward feature ad
 
 ## Completed Decisions
 
+### Linus Review Verdict — Issue #1 Chained Credential
+
+**Date:** 2026-05-23T16:02:33.592-07:00 | **From:** linus | **Status:** approved | **Issue:** #1
+
+APPROVE Rusty's issue #1 implementation.
+
+- The new `chained` login mode is registered in the internal provider factory, supported login list, and public `pkg/token` constants.
+- The implementation delegates to Azure SDK `DefaultAzureCredential` and preserves kubelogin cloud, tenant, instance discovery, and custom HTTP transport options.
+- Added test-only coverage to assert internal factory wiring returns `*ChainedCredential` and public `GetTokenProvider` can construct chained login.
+- Validation passed for `go test ./pkg/internal/token ./pkg/token` and `go build ./...`.
+- Full `go test ./...` is blocked by unrelated `pkg/internal/pop/cache` keychain state failures on this machine; no chained credential regression observed.
+
+No rejection; no lockout or reassignment required.
+
 ### Chained credential order follows installed Azure SDK
 
 **Date:** 2026-05-23T16:02:33.592-07:00 | **From:** rusty | **Status:** implemented | **Issue:** #1
