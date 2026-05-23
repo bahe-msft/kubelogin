@@ -33,6 +33,17 @@ func TestGetTokenProvider(t *testing.T) {
 		assert.NoError(t, err)
 		assert.NotNil(t, tp)
 	})
+
+	t.Run("chained login", func(t *testing.T) {
+		opts := &Options{
+			LoginMethod: ChainedLogin,
+			ServerID:    "server-id",
+			TenantID:    "tenant-id",
+		}
+		tp, err := GetTokenProvider(opts)
+		assert.NoError(t, err)
+		assert.NotNil(t, tp)
+	})
 }
 
 func TestTokenProviderShim_GetAccessToken(t *testing.T) {

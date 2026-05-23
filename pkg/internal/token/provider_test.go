@@ -36,6 +36,15 @@ func TestNewAzIdentityCredential(t *testing.T) {
 			wantErr: false,
 		},
 		{
+			name: "Chained login",
+			options: &Options{
+				LoginMethod: ChainedLogin,
+				ServerID:    "server-id",
+				TenantID:    "tenant-id",
+			},
+			wantErr: false,
+		},
+		{
 			name: "Device code login",
 			options: &Options{
 				LoginMethod: DeviceCodeLogin,
@@ -136,6 +145,9 @@ func TestNewAzIdentityCredential(t *testing.T) {
 			} else {
 				assert.NoError(t, err)
 				assert.NotNil(t, provider)
+				if tt.options.LoginMethod == ChainedLogin {
+					assert.IsType(t, &ChainedCredential{}, provider)
+				}
 			}
 		})
 	}

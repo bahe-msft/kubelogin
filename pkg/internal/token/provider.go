@@ -30,6 +30,9 @@ func NewAzIdentityCredential(record azidentity.AuthenticationRecord, o *Options)
 	case AzureDeveloperCLILogin:
 		return newAzureDeveloperCLICredential(o)
 
+	case ChainedLogin:
+		return newChainedCredential(o)
+
 	case DeviceCodeLogin:
 		switch {
 		case o.IsLegacy:

@@ -11,4 +11,5 @@
 - [non-interactive managed service identity login](./concepts/login-modes/msi.md)
 - [non-interactive Azure CLI token login (AKS only)](./concepts/login-modes/azurecli.md)
 - [non-interactive Azure Developer CLI token login (AKS only)](./concepts/login-modes/azd.md)
+- [non-interactive chained credential login](./concepts/login-modes/chained.md)
 - [non-interactive workload identity login](./concepts/login-modes/workloadidentity.md)

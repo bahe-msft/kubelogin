@@ -7,6 +7,7 @@ import "github.com/Azure/kubelogin/pkg/internal/token"
 const (
 	ServicePrincipalLogin = token.ServicePrincipalLogin
 	MSILogin              = token.MSILogin
+	ChainedLogin          = token.ChainedLogin
 	WorkloadIdentityLogin = token.WorkloadIdentityLogin
 )
 
