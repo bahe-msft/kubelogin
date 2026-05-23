@@ -9,3 +9,11 @@
 ## Learnings
 
 <!-- Append learnings below -->
+
+### 2026-05-23T23:09:05Z — Issue #1 Chained Credential Implementation Completed
+- Rusty successfully implemented chained credential login mode (PR #707 port)
+- All validation passed: `go test ./pkg/internal/token ./pkg/token` and `go build ./...`
+- Key decision documented: SDK chain order follows azidentity v1.8.0 DefaultAzureCredential
+- Team chose to keep docs aligned with SDK rather than hard-code chain (allows future SDK upgrades)
+- Implementation ready for team review and merge
+

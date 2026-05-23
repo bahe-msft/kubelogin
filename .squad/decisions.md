@@ -32,6 +32,18 @@ The chained credential login mode implementation is a straightforward feature ad
 - The `DefaultAzureCredential` chain order is non-negotiable per Azure SDK design
 - Branch `pr707` ready at repo root
 
+## Completed Decisions
+
+### Chained credential order follows installed Azure SDK
+
+**Date:** 2026-05-23T16:02:33.592-07:00 | **From:** rusty | **Status:** implemented | **Issue:** #1
+
+The new `chained` login mode delegates to Azure SDK for Go `azidentity.NewDefaultAzureCredential` rather than building a custom chain.
+
+Acceptance requires respecting Azure SDK `DefaultAzureCredential` order. In the repository's installed `github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.8.0`, `DefaultAzureCredential` documents this order: Environment Credential, Workload Identity Credential, Managed Identity Credential, Azure CLI Credential, Azure Developer CLI Credential. Documentation for chained mode reflects that SDK order, including Azure Developer CLI.
+
+Future SDK upgrades may change the chain order. If that happens, keep kubelogin docs aligned with the SDK rather than hard-coding a local chain unless the team explicitly decides to diverge.
+
 ## Governance
 
 - All meaningful changes require team consensus
