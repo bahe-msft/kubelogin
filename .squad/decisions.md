@@ -2,6 +2,18 @@
 
 ## Active Decisions
 
+### PR #2 CI Failure Resolution
+
+**Date:** 2026-05-23T16:02:33.592-07:00 | **From:** livingston | **Issue:** PR #2
+
+The `dependency-review` check in PR #2 failed with 403 Forbidden. **Root Cause:** Missing workflow permission in `.github/workflows/dependency-review.yml`.
+
+The workflow lacked the `pull-requests: read` permission required by the GitHub dependency-review action to fetch PR metadata and analyze dependency changes.
+
+**Fix Applied:** Added `pull-requests: read` to workflow permissions (commit 8671f8e on branch pr707).
+
+**Impact:** This is a DevOps configuration gap unrelated to Rusty's chained credential implementation. Once merged, dependency-review will function correctly.
+
 ### Issue #1 Routing: Reimplement Azure/kubelogin PR #707
 
 **Date:** 2026-05-23T16:02:33.592-07:00 | **From:** danny | **Status:** proposed_handoff
