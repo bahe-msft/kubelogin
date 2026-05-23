@@ -1,0 +1,33 @@
+{
+  "history_version": 1,
+  "assignments": [
+    {
+      "assignment_id": "kubelogin-20260523-163729",
+      "project": "kubelogin",
+      "universe": "Alien",
+      "created_at": "2026-05-23T16:37:29.489-07:00",
+      "members": [
+        {
+          "name": "Ripley",
+          "role": "Tech Lead"
+        },
+        {
+          "name": "Dallas",
+          "role": "Dev"
+        },
+        {
+          "name": "Lambert",
+          "role": "Security"
+        },
+        {
+          "name": "Parker",
+          "role": "Test"
+        },
+        {
+          "name": "Ash",
+          "role": "Docs/Release"
+        }
+      ]
+    }
+  ]
+}
