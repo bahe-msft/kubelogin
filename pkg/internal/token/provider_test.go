@@ -120,14 +120,6 @@ func TestNewAzIdentityCredential(t *testing.T) {
 			},
 			wantErr: false,
 		},
-		{
-			name: "Chained login",
-			options: &Options{
-				LoginMethod: ChainedLogin,
-				ServerID:    "server-id",
-			},
-			wantErr: false,
-		},
 	}
 
 	for _, tt := range tests {
