@@ -50,6 +50,17 @@ func TestOptions(t *testing.T) {
 		}
 	})
 
+	t.Run("chained login method should validate and be listed as supported", func(t *testing.T) {
+		o := defaultOptions()
+		o.LoginMethod = ChainedLogin
+		if err := o.Validate(); err != nil {
+			t.Fatalf("chained login method should validate. got: %s", err)
+		}
+		if !strings.Contains(GetSupportedLogins(), ChainedLogin) {
+			t.Fatalf("supported login list %q should include %q", GetSupportedLogins(), ChainedLogin)
+		}
+	})
+
 	t.Run("pop-enabled flag should return error if pop-claims are not provided", func(t *testing.T) {
 		o := defaultOptions()
 		o.IsPoPTokenEnabled = true

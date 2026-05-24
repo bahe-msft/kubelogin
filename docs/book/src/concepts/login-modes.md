@@ -17,6 +17,8 @@ This client app is only used in [device code](./login-modes/devicecode.md), [web
 - `--server-id`: the application ID of the [web app, or resource server](https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/auth-oauth2). 
 The token should be issued to this resource.
 
+For [chained](./login-modes/chained.md) login mode, most credential inputs are Azure SDK environment variables or external tool login state rather than kubelogin flags.
+
 ## References
 
 * https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/auth-oauth2

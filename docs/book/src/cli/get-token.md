@@ -26,7 +26,7 @@ Flags:
   -h, --help                                 help for get-token
       --identity-resource-id string          Managed Identity resource id.
       --legacy                               set to true to get token with 'spn:' prefix in audience claim
-  -l, --login string                         Login method. Supported methods: devicecode, interactive, spn, ropc, msi, azurecli, azd, workloadidentity, azurepipelines. It may be specified in AAD_LOGIN_METHOD environment variable (default "devicecode")
+  -l, --login string                         Login method. Supported methods: devicecode, interactive, spn, ropc, msi, azurecli, azd, workloadidentity, azurepipelines, chained. It may be specified in AAD_LOGIN_METHOD environment variable (default "devicecode")
       --login-hint string                    The login hint to pre-fill the username in the interactive login flow.
       --password string                      password for ropc login flow. It may be specified in AAD_USER_PRINCIPAL_PASSWORD or AZURE_PASSWORD environment variable
       --pop-claims key=val,key2=val2         contains a comma-separated list of claims to attach to the pop token in the format key=val,key2=val2. At minimum, specify the ARM ID of the cluster as `u=ARM_ID`
@@ -226,6 +226,28 @@ users:
           - <AAD server app ID>
           - --login
           - workloadidentity
+        command: kubelogin
+        env: null
+```
+
+### Chained
+
+This example relies on Azure SDK environment variables or an external tool login, such as `az login` or `azd auth login`, to select a credential from the Azure SDK `DefaultAzureCredential` chain.
+
+```yaml
+kind: Config
+preferences: {}
+users:
+  - name: demouser
+    user:
+      exec:
+        apiVersion: client.authentication.k8s.io/v1beta1
+        args:
+          - get-token
+          - --server-id
+          - <AAD server app ID>
+          - --login
+          - chained
         command: kubelogin
         env: null
 ```
