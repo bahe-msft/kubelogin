@@ -3,6 +3,7 @@ package token
 import (
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -49,4 +50,26 @@ func TestNewChainedCredential(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestNewChainedCredentialPassesExplicitTenantID(t *testing.T) {
+	const tenantID = "00000000-0000-0000-0000-000000000000"
+
+	originalNewDefaultAzureCredential := newDefaultAzureCredential
+	t.Cleanup(func() {
+		newDefaultAzureCredential = originalNewDefaultAzureCredential
+	})
+
+	var capturedOptions *azidentity.DefaultAzureCredentialOptions
+	newDefaultAzureCredential = func(opts *azidentity.DefaultAzureCredentialOptions) (*azidentity.DefaultAzureCredential, error) {
+		capturedOptions = opts
+		return originalNewDefaultAzureCredential(opts)
+	}
+
+	cred, err := newChainedCredential(&Options{TenantID: tenantID})
+
+	require.NoError(t, err)
+	require.NotNil(t, cred)
+	require.NotNil(t, capturedOptions)
+	assert.Equal(t, tenantID, capturedOptions.TenantID)
 }

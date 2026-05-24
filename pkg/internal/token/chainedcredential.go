@@ -15,17 +15,20 @@ type ChainedCredential struct {
 
 var _ CredentialProvider = (*ChainedCredential)(nil)
 
+var newDefaultAzureCredential = azidentity.NewDefaultAzureCredential
+
 func newChainedCredential(opts *Options) (CredentialProvider, error) {
 	azOpts := &azidentity.DefaultAzureCredentialOptions{
 		ClientOptions:            azcore.ClientOptions{Cloud: opts.GetCloudConfiguration()},
 		DisableInstanceDiscovery: opts.DisableInstanceDiscovery,
+		TenantID:                 opts.TenantID,
 	}
 
 	if opts.httpClient != nil {
 		azOpts.Transport = opts.httpClient
 	}
 
-	cred, err := azidentity.NewDefaultAzureCredential(azOpts)
+	cred, err := newDefaultAzureCredential(azOpts)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create chained credential: %w", err)
 	}
