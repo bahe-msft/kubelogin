@@ -166,48 +166,6 @@ func TestConvert(t *testing.T) {
 			},
 		},
 		{
-			name: "using legacy azure auth to convert to chained",
-			authProviderConfig: map[string]string{
-				cfgEnvironment: envName,
-				cfgApiserverID: serverID,
-				cfgClientID:    clientID,
-				cfgTenantID:    tenantID,
-				cfgConfigMode:  "0",
-			},
-			overrideFlags: map[string]string{
-				flagLoginMethod: token.ChainedLogin,
-			},
-			expectedArgs: []string{
-				getTokenCommand,
-				argServerID, serverID,
-				argLoginMethod, token.ChainedLogin,
-			},
-		},
-		{
-			name: "using legacy azure auth to convert to chained with explicit options",
-			authProviderConfig: map[string]string{
-				cfgEnvironment: envName,
-				cfgApiserverID: serverID,
-				cfgClientID:    clientID,
-				cfgTenantID:    tenantID,
-				cfgConfigMode:  "0",
-			},
-			overrideFlags: map[string]string{
-				flagLoginMethod:   token.ChainedLogin,
-				flagTenantID:      tenantID,
-				flagEnvironment:   envName,
-				flagAuthorityHost: authorityHost,
-			},
-			expectedArgs: []string{
-				getTokenCommand,
-				argServerID, serverID,
-				argTenantID, tenantID,
-				argEnvironment, envName,
-				argAuthorityHost, authorityHost,
-				argLoginMethod, token.ChainedLogin,
-			},
-		},
-		{
 			name: "using legacy azure auth to convert to spn without setting environment",
 			authProviderConfig: map[string]string{
 				cfgApiserverID: serverID,
@@ -674,52 +632,6 @@ func TestConvert(t *testing.T) {
 				argClientID, clientID,
 				argTenantID, tenantID,
 				argLoginMethod, token.DeviceCodeLogin,
-			},
-			command: execName,
-		},
-		{
-			name: "with exec format kubeconfig, convert from devicecode to chained",
-			execArgItems: []string{
-				getTokenCommand,
-				argServerID, serverID,
-				argClientID, clientID,
-				argTenantID, tenantID,
-				argEnvironment, envName,
-				argLoginMethod, token.DeviceCodeLogin,
-			},
-			overrideFlags: map[string]string{
-				flagLoginMethod: token.ChainedLogin,
-			},
-			expectedArgs: []string{
-				getTokenCommand,
-				argServerID, serverID,
-				argLoginMethod, token.ChainedLogin,
-			},
-			command: execName,
-		},
-		{
-			name: "with exec format kubeconfig, convert from devicecode to chained with explicit options",
-			execArgItems: []string{
-				getTokenCommand,
-				argServerID, serverID,
-				argClientID, clientID,
-				argTenantID, tenantID,
-				argEnvironment, envName,
-				argLoginMethod, token.DeviceCodeLogin,
-			},
-			overrideFlags: map[string]string{
-				flagLoginMethod:   token.ChainedLogin,
-				flagTenantID:      tenantID,
-				flagEnvironment:   envName,
-				flagAuthorityHost: authorityHost,
-			},
-			expectedArgs: []string{
-				getTokenCommand,
-				argServerID, serverID,
-				argTenantID, tenantID,
-				argEnvironment, envName,
-				argAuthorityHost, authorityHost,
-				argLoginMethod, token.ChainedLogin,
 			},
 			command: execName,
 		},

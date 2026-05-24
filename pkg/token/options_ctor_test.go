@@ -74,10 +74,6 @@ func TestOptionsWithEnv(t *testing.T) {
 	})
 }
 
-func TestLoginConstants(t *testing.T) {
-	assert.Equal(t, token.ChainedLogin, ChainedLogin)
-}
-
 func TestOptions_toInternalOptions(t *testing.T) {
 	t.Run("basic", func(t *testing.T) {
 		o := &Options{

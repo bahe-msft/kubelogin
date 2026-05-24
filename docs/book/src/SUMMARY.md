@@ -9,7 +9,6 @@
     - [Device Code](./concepts/login-modes/devicecode.md)
     - [Azure CLI](./concepts/login-modes/azurecli.md)
     - [Azure Developer CLI](./concepts/login-modes/azd.md)
-    - [Chained](./concepts/login-modes/chained.md)
     - [Azure Pipelines](./concepts/login-modes/azurepipelines.md)
     - [Web Browser Interactive](./concepts/login-modes/interactive.md)
     - [Service Principal](./concepts/login-modes/sp.md)

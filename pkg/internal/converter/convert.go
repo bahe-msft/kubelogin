@@ -484,20 +484,6 @@ func Convert(o Options, pathOptions *clientcmd.PathOptions) error {
 			if o.isSet(flagAzurePipelinesServiceConnectionID) {
 				exec.Args = append(exec.Args, argAzurePipelinesServiceConnectionID, o.TokenOptions.AzurePipelinesServiceConnectionID)
 			}
-
-		case token.ChainedLogin:
-
-			if o.isSet(flagTenantID) && o.TokenOptions.TenantID != "" {
-				exec.Args = append(exec.Args, argTenantID, o.TokenOptions.TenantID)
-			}
-
-			if o.isSet(flagEnvironment) && o.TokenOptions.Environment != "" {
-				exec.Args = append(exec.Args, argEnvironment, o.TokenOptions.Environment)
-			}
-
-			if o.isSet(flagAuthorityHost) && o.TokenOptions.AuthorityHost != "" {
-				exec.Args = append(exec.Args, argAuthorityHost, o.TokenOptions.AuthorityHost)
-			}
 		}
 
 		authInfo.Exec = exec

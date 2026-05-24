@@ -69,7 +69,6 @@ const (
 	AzureDeveloperCLILogin = "azd"
 	WorkloadIdentityLogin  = "workloadidentity"
 	AzurePipelinesLogin    = "azurepipelines"
-	ChainedLogin           = "chained"
 )
 
 var (
@@ -78,7 +77,7 @@ var (
 )
 
 func init() {
-	supportedLogin = []string{DeviceCodeLogin, InteractiveLogin, ServicePrincipalLogin, ROPCLogin, MSILogin, AzureCLILogin, AzureDeveloperCLILogin, WorkloadIdentityLogin, AzurePipelinesLogin, ChainedLogin}
+	supportedLogin = []string{DeviceCodeLogin, InteractiveLogin, ServicePrincipalLogin, ROPCLogin, MSILogin, AzureCLILogin, AzureDeveloperCLILogin, WorkloadIdentityLogin, AzurePipelinesLogin}
 }
 
 func GetSupportedLogins() string {

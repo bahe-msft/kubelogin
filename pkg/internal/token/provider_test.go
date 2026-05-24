@@ -120,23 +120,10 @@ func TestNewAzIdentityCredential(t *testing.T) {
 			},
 			wantErr: false,
 		},
-		{
-			name: "Chained login",
-			options: &Options{
-				LoginMethod: ChainedLogin,
-				ServerID:    "server-id",
-				TenantID:    "tenant-id",
-			},
-			wantErr: false,
-		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if tt.options.LoginMethod == ChainedLogin {
-				isolateAzureSDKEnv(t)
-			}
-
 			record := azidentity.AuthenticationRecord{}
 			provider, err := NewAzIdentityCredential(record, tt.options)
 
