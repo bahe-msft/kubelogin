@@ -296,6 +296,19 @@ func Convert(o Options, pathOptions *clientcmd.PathOptions) error {
 				exec.Args = append(exec.Args, argTenantID, o.TokenOptions.TenantID)
 			}
 
+		case token.ChainedLogin:
+			if o.isSet(flagTenantID) {
+				exec.Args = append(exec.Args, argTenantID, o.TokenOptions.TenantID)
+			}
+
+			if o.isSet(flagEnvironment) {
+				exec.Args = append(exec.Args, argEnvironment, o.TokenOptions.Environment)
+			}
+
+			if o.isSet(flagAuthorityHost) {
+				exec.Args = append(exec.Args, argAuthorityHost, o.TokenOptions.AuthorityHost)
+			}
+
 		case token.AzureCLILogin:
 
 			if o.azureConfigDir != "" {
