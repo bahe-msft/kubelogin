@@ -83,9 +83,6 @@ func NewAzIdentityCredential(record azidentity.AuthenticationRecord, o *Options)
 
 	case AzurePipelinesLogin:
 		return newAzurePipelinesCredential(o)
-
-	case ChainedLogin:
-		return newChainedCredential(o)
 	}
 
 	return nil, errors.New("unsupported token provider")
