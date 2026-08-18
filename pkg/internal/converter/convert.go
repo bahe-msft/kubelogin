@@ -81,6 +81,25 @@ To learn more, please go to https://azure.github.io/kubelogin/
 	azureConfigDir = "AZURE_CONFIG_DIR"
 )
 
+type stringArgSource struct {
+	flagName        string
+	flagValue       string
+	legacyConfigKey string
+	execArg         string
+}
+
+func getStringArgValue(o Options, authInfo *api.AuthInfo, source stringArgSource) string {
+	if o.isSet(source.flagName) {
+		return source.flagValue
+	}
+
+	if isLegacyAzureAuth(authInfo) {
+		return authInfo.AuthProvider.Config[source.legacyConfigKey]
+	}
+
+	return getExecArg(authInfo, source.execArg)
+}
+
 func getArgValues(o Options, authInfo *api.AuthInfo) (
 	argServerIDVal,
 	argClientIDVal,
@@ -99,45 +118,30 @@ func getArgValues(o Options, authInfo *api.AuthInfo) (
 
 	isLegacyAuthProvider := isLegacyAzureAuth(authInfo)
 
-	if o.isSet(flagEnvironment) {
-		argEnvironmentVal = o.TokenOptions.Environment
-	} else if isLegacyAuthProvider {
-		if x, ok := authInfo.AuthProvider.Config[cfgEnvironment]; ok {
-			argEnvironmentVal = x
-		}
-	} else {
-		argEnvironmentVal = getExecArg(authInfo, argEnvironment)
-	}
-
-	if o.isSet(flagTenantID) {
-		argTenantIDVal = o.TokenOptions.TenantID
-	} else if isLegacyAuthProvider {
-		if x, ok := authInfo.AuthProvider.Config[cfgTenantID]; ok {
-			argTenantIDVal = x
-		}
-	} else {
-		argTenantIDVal = getExecArg(authInfo, argTenantID)
-	}
-
-	if o.isSet(flagClientID) {
-		argClientIDVal = o.TokenOptions.ClientID
-	} else if isLegacyAuthProvider {
-		if x, ok := authInfo.AuthProvider.Config[cfgClientID]; ok {
-			argClientIDVal = x
-		}
-	} else {
-		argClientIDVal = getExecArg(authInfo, argClientID)
-	}
-
-	if o.isSet(flagServerID) {
-		argServerIDVal = o.TokenOptions.ServerID
-	} else if isLegacyAuthProvider {
-		if x, ok := authInfo.AuthProvider.Config[cfgApiserverID]; ok {
-			argServerIDVal = x
-		}
-	} else {
-		argServerIDVal = getExecArg(authInfo, argServerID)
-	}
+	argEnvironmentVal = getStringArgValue(o, authInfo, stringArgSource{
+		flagName:        flagEnvironment,
+		flagValue:       o.TokenOptions.Environment,
+		legacyConfigKey: cfgEnvironment,
+		execArg:         argEnvironment,
+	})
+	argTenantIDVal = getStringArgValue(o, authInfo, stringArgSource{
+		flagName:        flagTenantID,
+		flagValue:       o.TokenOptions.TenantID,
+		legacyConfigKey: cfgTenantID,
+		execArg:         argTenantID,
+	})
+	argClientIDVal = getStringArgValue(o, authInfo, stringArgSource{
+		flagName:        flagClientID,
+		flagValue:       o.TokenOptions.ClientID,
+		legacyConfigKey: cfgClientID,
+		execArg:         argClientID,
+	})
+	argServerIDVal = getStringArgValue(o, authInfo, stringArgSource{
+		flagName:        flagServerID,
+		flagValue:       o.TokenOptions.ServerID,
+		legacyConfigKey: cfgApiserverID,
+		execArg:         argServerID,
+	})
 
 	if o.isSet(flagIsLegacy) && o.TokenOptions.IsLegacy {
 		argIsLegacyConfigModeVal = true
