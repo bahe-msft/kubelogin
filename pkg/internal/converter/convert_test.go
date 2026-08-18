@@ -12,6 +12,85 @@ import (
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 )
 
+func TestGetStringArgValue(t *testing.T) {
+	tests := []struct {
+		name          string
+		flagValue     string
+		legacyValue   string
+		includeLegacy bool
+		execValue     string
+		want          string
+	}{
+		{
+			name:          "explicit flag takes precedence over legacy config and exec arg",
+			flagValue:     "flag-environment",
+			legacyValue:   "legacy-environment",
+			includeLegacy: true,
+			execValue:     "exec-environment",
+			want:          "flag-environment",
+		},
+		{
+			name:          "legacy config takes precedence over exec arg",
+			legacyValue:   "legacy-environment",
+			includeLegacy: true,
+			execValue:     "exec-environment",
+			want:          "legacy-environment",
+		},
+		{
+			name:          "empty legacy config does not fall back to exec arg",
+			includeLegacy: true,
+			execValue:     "exec-environment",
+			want:          "",
+		},
+		{
+			name:      "exec arg is used for non legacy auth",
+			execValue: "exec-environment",
+			want:      "exec-environment",
+		},
+		{
+			name: "missing values return empty string",
+			want: "",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			flags := pflag.NewFlagSet("test", pflag.ContinueOnError)
+			o := New()
+			o.Flags = flags
+			o.AddFlags(flags)
+			if tt.flagValue != "" {
+				if err := flags.Set(flagEnvironment, tt.flagValue); err != nil {
+					t.Fatalf("setting environment flag: %v", err)
+				}
+			}
+
+			authInfo := &clientcmdapi.AuthInfo{}
+			if tt.includeLegacy {
+				authInfo.AuthProvider = &clientcmdapi.AuthProviderConfig{
+					Name: azureAuthProvider,
+					Config: map[string]string{
+						cfgEnvironment: tt.legacyValue,
+					},
+				}
+			}
+			if tt.execValue != "" {
+				authInfo.Exec = &clientcmdapi.ExecConfig{Args: []string{argEnvironment, tt.execValue}}
+			}
+
+			source := stringArgSource{
+				flagName:        flagEnvironment,
+				flagValue:       o.TokenOptions.Environment,
+				legacyConfigKey: cfgEnvironment,
+				execArg:         argEnvironment,
+			}
+			if got := getStringArgValue(o, authInfo, source); got != tt.want {
+				t.Errorf("getStringArgValue() = %q, want %q", got, tt.want)
+			}
+		})
+	}
+}
+
 func TestConvert(t *testing.T) {
 	const (
 		clusterName1       = "aks1"
