@@ -13,6 +13,8 @@ import (
 )
 
 func TestGetStringArgValue(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		name          string
 		flagValue     string
@@ -55,6 +57,8 @@ func TestGetStringArgValue(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			flags := pflag.NewFlagSet("test", pflag.ContinueOnError)
 			o := New()
 			o.Flags = flags
